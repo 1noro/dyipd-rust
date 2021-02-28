@@ -1,0 +1,31 @@
+{
+    "mail_from": {
+        "mail": "<gmail_notofication_mail>",
+        "password": "<gmail_notofication_password>"
+    },
+    "mails_to": [
+        "<mail_to_notify1>",
+        "<mail_to_notify2>",
+        "<mail_to_notify3>"
+    ],
+    "namecheap": [
+        {
+            "domain": "<domain1>",
+            "key": "<domain1_dynamic_dns_key>",
+            "hosts": [
+                "<host1>",
+                "<host2>",
+                "<host3>"
+            ]
+        },
+        {
+            "domain": "<domain2>",
+            "key": "<domain2_dynamic_dns_key>",
+            "hosts": [
+                "<host1>",
+                "<host2>",
+                "<host3>"
+            ]
+        }
+    ]
+}
