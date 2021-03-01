@@ -1,12 +1,37 @@
 
 // # USE
 use std::env;
+use std::path::Path;
+use std::fs::File;
+use serde::Deserialize;
 
 // # CONST
 //const LOOP_TIME: i32= 1800; // 1m = 60s, 5m = 300s, 10m = 600s, 15m = 900s, 30m = 1800s
 
-//const CONFIG_FILE: &str = "conf.json";
-//const LASTIP_FILE: &str = "lastip.json";
+const CONFIG_LOC: &str = "config.json";
+//const LASTIP_LOC: &str = "lastip.json";
+
+// # STRUCT
+#[derive(Debug, Deserialize)]
+//#[serde(rename_all = "camelCase")] // si el JSON estuviese en camelCase se podría renombrar
+struct MailFrom {
+    mail: String,
+    password: String
+}
+
+#[derive(Debug, Deserialize)]
+struct NamecheapRecord {
+    domain: String,
+    key: String,
+    hosts: Vec<String>
+}
+
+#[derive(Debug, Deserialize)]
+struct Config {
+    mail_from: MailFrom,
+    mails_to: Vec<String>,
+    namecheap: Vec<NamecheapRecord>
+}
 
 // # MAIN
 fn main() {
@@ -34,5 +59,15 @@ fn main() {
         i += 1;
     }
 
-    println!("(verbose, looping) = {:?}", (verbose, looping));
+    // println!("(verbose, looping) = {:?}", (verbose, looping));
+
+    // inicia el programa
+    if verbose >= 1 {println!("starting dyipd-rust")}
+
+    // comprobamos la configuración
+
+    let json_file_path = Path::new(CONFIG_LOC);
+    let file = File::open(json_file_path).expect("file not found");
+    let config: Config = serde_json::from_reader(file).expect("error while reading");
+    println!("{:?}", config)
 }

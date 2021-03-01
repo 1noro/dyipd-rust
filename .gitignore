@@ -15,5 +15,5 @@ Cargo.lock
 /target
 
 # Custom
-conf.json
-ip.json
+config.json
+lastip.json
