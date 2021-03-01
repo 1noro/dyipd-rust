@@ -4,9 +4,10 @@ use std::env;
 use std::path::Path;
 use std::fs::File;
 use serde::Deserialize;
+use std::{thread, time};
 
 // # CONST
-//const LOOP_TIME: i32= 1800; // 1m = 60s, 5m = 300s, 10m = 600s, 15m = 900s, 30m = 1800s
+const LOOP_TIME: time::Duration = time::Duration::from_millis(3000); // 1m = 60000ms, 5m = 300000ms, 10m = 600000ms, 15m = 900000ms, 30m = 1800000ms
 
 const CONFIG_LOC: &str = "config.json";
 //const LASTIP_LOC: &str = "lastip.json";
@@ -84,6 +85,12 @@ fn main() {
         list_domains(&config);
         println!("notification mail: {}", config.mail_from.mail);
         println!("mails to notify: {:?}", config.mails_to);
+    }
+
+    loop {
+        if verbose >= 1 && looping {println!("> beginning of the cycle");}
+        thread::sleep(LOOP_TIME);
+        if !looping {break;}
     }
 
 }
