@@ -74,8 +74,7 @@ fn main() {
     // inicia el programa
     if verbose >= 1 {println!("starting dyipd-rust")}
 
-    // comprobamos la configuración
-
+    // leeomos la configuración
     let json_file_path = Path::new(CONFIG_LOC);
     let file = File::open(json_file_path).expect("file not found");
     let config: Config = serde_json::from_reader(file).expect("error while reading");
@@ -87,6 +86,7 @@ fn main() {
         println!("mails to notify: {:?}", config.mails_to);
     }
 
+    // empieza el bucle
     loop {
         if verbose >= 1 && looping {println!("> beginning of the cycle");}
         thread::sleep(LOOP_TIME);
