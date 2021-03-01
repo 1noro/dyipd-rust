@@ -33,6 +33,15 @@ struct Config {
     namecheap: Vec<NamecheapRecord>
 }
 
+// # FN
+fn list_domains(config: &Config) {
+    println!("configured domains:");
+    println!("- namecheap:");
+    for namecheap_record in config.namecheap.iter() {
+        println!("  {} {:?}", namecheap_record.domain, namecheap_record.hosts);
+    }
+}
+
 // # MAIN
 fn main() {
     // variables de los parámetros
@@ -42,7 +51,7 @@ fn main() {
 
     // obtenemos la lista de parámetros
     let args: Vec<String> = env::args().collect();
-    println!("{:?}", args);
+    // println!("{:?}", args);
 
     // parseamos los parámetros
     let mut i = 1;
@@ -69,5 +78,12 @@ fn main() {
     let json_file_path = Path::new(CONFIG_LOC);
     let file = File::open(json_file_path).expect("file not found");
     let config: Config = serde_json::from_reader(file).expect("error while reading");
-    println!("{:?}", config)
+    // println!("{:?}", config)
+
+    if verbose >= 2 {
+        list_domains(&config);
+        println!("notification mail: {}", config.mail_from.mail);
+        println!("mails to notify: {:?}", config.mails_to);
+    }
+
 }
