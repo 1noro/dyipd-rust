@@ -1,52 +1,26 @@
 
+// # MOD
+mod utils;
+
+
 // # USE
 use std::env;
 use std::path::Path;
 use std::fs::File;
-use serde::Deserialize;
 use std::{thread, time};
+// use config::Config;
+
 
 // # CONST
 const LOOP_TIME: time::Duration = time::Duration::from_millis(3000); // 1m = 60000ms, 5m = 300000ms, 10m = 600000ms, 15m = 900000ms, 30m = 1800000ms
-
 const CONFIG_LOC: &str = "config.json";
 //const LASTIP_LOC: &str = "lastip.json";
 
-// # STRUCT
-#[derive(Debug, Deserialize)]
-//#[serde(rename_all = "camelCase")] // si el JSON estuviese en camelCase se podría renombrar
-struct MailFrom {
-    mail: String,
-    password: String
-}
-
-#[derive(Debug, Deserialize)]
-struct NamecheapRecord {
-    domain: String,
-    key: String,
-    hosts: Vec<String>
-}
-
-#[derive(Debug, Deserialize)]
-struct Config {
-    mail_from: MailFrom,
-    mails_to: Vec<String>,
-    namecheap: Vec<NamecheapRecord>
-}
-
-// # FN
-fn list_domains(config: &Config) {
-    println!("configured domains:");
-    println!("- namecheap:");
-    for namecheap_record in config.namecheap.iter() {
-        println!("  {} {:?}", namecheap_record.domain, namecheap_record.hosts);
-    }
-}
 
 // # MAIN
 fn main() {
     // variables de los parámetros
-    let mut verbose = 0;
+    let mut verbose: i8 = 0;
     //let mut send_mail = false;
     let mut looping = false;
 
@@ -58,7 +32,7 @@ fn main() {
     let mut i = 1;
     while i < args.len() {
         if args[i] == "verbose" {
-            match args[i + 1].parse::<i32>() {
+            match args[i + 1].parse::<i8>() {
                 Ok(n) => verbose = n,
                 Err(e) => {eprintln!("Got error: {}", e); return ();}
             }
@@ -77,11 +51,11 @@ fn main() {
     // leeomos la configuración
     let json_file_path = Path::new(CONFIG_LOC);
     let file = File::open(json_file_path).expect("file not found");
-    let config: Config = serde_json::from_reader(file).expect("error while reading");
+    let config: utils::Config = serde_json::from_reader(file).expect("error while reading");
     // println!("{:?}", config)
 
     if verbose >= 2 {
-        list_domains(&config);
+        utils::list_domains(&config);
         println!("notification mail: {}", config.mail_from.mail);
         println!("mails to notify: {:?}", config.mails_to);
     }
