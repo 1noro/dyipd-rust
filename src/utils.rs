@@ -32,3 +32,9 @@ pub fn list_domains(config: &Config) {
         println!("  {} {:?}", namecheap_record.domain, namecheap_record.hosts);
     }
 }
+
+pub fn vlog(verbose: &i8, verbose_level: i8, text: &str) {
+    if *verbose >= verbose_level {
+        println!("{}", text);
+    }
+}
