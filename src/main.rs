@@ -89,8 +89,8 @@ fn main() {
     // empieza el bucle
     loop {
         if verbose >= 1 && looping {println!("> beginning of the cycle");}
-        thread::sleep(LOOP_TIME);
         if !looping {break;}
+        thread::sleep(LOOP_TIME);
     }
 
 }
